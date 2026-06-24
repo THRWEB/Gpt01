@@ -1,0 +1,49 @@
+<div class="card">
+  <div class="card-title">
+    My Profile
+  </div>
+</div><div class="tournament-card">  <div class="tournament-title">
+    User Information
+  </div>  <p id="userEmail">
+    Loading...
+  </p></div><div class="card" style="margin-top:15px;"><button
+class="btn btn-primary"
+onclick="logout()">
+Logout
+</button>
+
+</div><script type="module">
+
+import { auth }
+from "./js/firebase.js";
+
+import {
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+const emailBox =
+document.getElementById(
+  "userEmail"
+);
+
+onAuthStateChanged(
+  auth,
+  (user)=>{
+
+    if(user){
+
+      emailBox.textContent =
+      user.email;
+
+    }else{
+
+      emailBox.textContent =
+      "Not Logged In";
+
+    }
+
+  }
+);
+
+</script>
