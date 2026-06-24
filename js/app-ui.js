@@ -3,48 +3,136 @@ import { auth } from "./firebase.js";
 import {
   onAuthStateChanged,
   signOut
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-const container = document.getElementById("pageContainer");
+const container =
+document.getElementById(
+  "pageContainer"
+);
 
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(
+  auth,
+  (user)=>{
 
-  if(!user){
-    location.href="login.html";
-    return;
+    if(!user){
+
+      location.href =
+      "login.html";
+
+      return;
+
+    }
+
+    loadPage(
+      "dashboard"
+    );
+
   }
-
-  loadPage("dashboard");
-
-});
+);
 
 async function loadPage(page){
 
-  const res = await fetch(
-    `pages/${page}.html`
-  );
+  try{
 
-  const html = await res.text();
+    const res =
+    await fetch(
+      `pages/${page}.html`
+    );
 
-  container.innerHTML = html;
+    const html =
+    await res.text();
+
+    container.innerHTML =
+    html;
+
+    // Execute page scripts
+
+    const scripts =
+    container.querySelectorAll(
+      "script"
+    );
+
+    scripts.forEach(
+      (oldScript)=>{
+
+        const newScript =
+        document.createElement(
+          "script"
+        );
+
+        if(
+          oldScript.type
+        ){
+          newScript.type =
+          oldScript.type;
+        }
+
+        if(
+          oldScript.src
+        ){
+          newScript.src =
+          oldScript.src;
+        }
+        else{
+          newScript.textContent =
+          oldScript.textContent;
+        }
+
+        document.body.appendChild(
+          newScript
+        );
+
+        oldScript.remove();
+
+      }
+    );
+
+  }
+
+  catch(err){
+
+    console.error(err);
+
+    container.innerHTML = `
+
+    <div class="card">
+
+    Failed To Load Page
+
+    </div>
+
+    `;
+
+  }
 
 }
 
-document.addEventListener("click",(e)=>{
+document.addEventListener(
+  "click",
+  (e)=>{
 
-  const btn = e.target.closest("[data-page]");
+    const btn =
+    e.target.closest(
+      "[data-page]"
+    );
 
-  if(!btn) return;
+    if(!btn) return;
 
-  loadPage(btn.dataset.page);
+    loadPage(
+      btn.dataset.page
+    );
 
-});
+  }
+);
 
-window.logout = async()=>{
+window.logout =
+async()=>{
 
-  await signOut(auth);
+  await signOut(
+    auth
+  );
 
-  location.href="login.html";
+  location.href =
+  "login.html";
 
 };
