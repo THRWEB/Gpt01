@@ -88,12 +88,11 @@ async function loadTournaments(){
       <br>
 
       <button
-      class="btn btn-primary">
-
-      Join Tournament
-
-      </button>
-
+class="btn btn-primary joinBtn"
+data-id="${doc.id}"
+data-title="${t.title}">
+Join Tournament
+</button>
       </div>
 
       `;
