@@ -1,8 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBzs07mEGjaGXb-aiGY73aS0jBQcavgx7Q",
@@ -18,3 +16,10 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+// ✅ ADMIN CHECK FUNCTION
+export async function isAdmin(uid){
+  const ref = doc(db, "admins", uid);
+  const snap = await getDoc(ref);
+  return snap.exists();
+}
