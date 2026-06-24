@@ -92,7 +92,7 @@ async function loadTournaments(){
 
 loadTournaments();
 
-document.addEventListener(
+list.addEventListener(
   "click",
   async(e)=>{
 
@@ -100,8 +100,6 @@ document.addEventListener(
     e.target.closest(".joinBtn");
 
     if(!btn) return;
-
-    alert("Button Clicked");
 
     try{
 
@@ -132,8 +130,8 @@ document.addEventListener(
 
     catch(err){
 
-      alert(err.message);
       console.error(err);
+      alert(err.message);
 
     }
 
