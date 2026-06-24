@@ -1,0 +1,80 @@
+<div class="card">
+
+  <div class="card-title">
+    My Matches
+  </div>
+
+</div>
+
+<div id="myMatches">
+
+  <div class="card">
+    Loading...
+  </div>
+
+</div>
+
+<script type="module">
+
+import { auth, db }
+from "../js/firebase.js";
+
+import {
+  collection,
+  query,
+  where,
+  getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const container =
+document.getElementById("myMatches");
+
+const user = auth.currentUser;
+
+if(user){
+
+  const q = query(
+    collection(db,"joinedMatches"),
+    where("uid","==",user.uid)
+  );
+
+  const snap = await getDocs(q);
+
+  if(snap.empty){
+
+    container.innerHTML = `
+    <div class="card">
+      No Joined Match
+    </div>
+    `;
+
+  }else{
+
+    let html="";
+
+    snap.forEach(doc=>{
+
+      const data = doc.data();
+
+      html += `
+      <div class="tournament-card">
+
+        <div class="tournament-title">
+          ${data.tournamentTitle}
+        </div>
+
+        <div class="tournament-meta">
+          <span>Joined</span>
+          <span>✓</span>
+        </div>
+
+      </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  }
+}
+
+</script>
