@@ -1,126 +1,58 @@
-import { auth } from "./firebase.js";
+import { auth, isAdmin } from "./firebase.js";
 
 import {
-onAuthStateChanged,
-signOut
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-const container =
-document.getElementById(
-"pageContainer"
-);
+const container = document.getElementById("pageContainer");
 
-onAuthStateChanged(
-auth,
-(user)=>{
+onAuthStateChanged(auth, async(user)=>{
 
-if(!user){
+  if(!user){
+    location.href = "login.html";
+    return;
+  }
 
-  location.href =
-  "login.html";
+  loadPage("dashboard");
 
-  return;
-}
+  // ✅ ADMIN BUTTON CONTROL
+  const admin = await isAdmin(user.uid);
 
-loadPage(
-  "dashboard"
-);
+  const adminBtn = document.querySelector('[data-page="admin"]');
 
-}
-);
+  if(adminBtn){
+    adminBtn.style.display = admin ? "block" : "none";
+  }
+
+});
 
 async function loadPage(page){
 
-try{
+  const res = await fetch(`pages/${page}.html`);
+  const html = await res.text();
 
-const res =
-await fetch(
-  `pages/${page}.html`
-);
+  container.innerHTML = html;
 
-const html =
-await res.text();
+  const scripts = container.querySelectorAll("script");
 
-container.innerHTML =
-html;
-
-const scripts =
-container.querySelectorAll(
-  "script"
-);
-
-for(
-  const oldScript
-  of scripts
-){
-
-  const newScript =
-  document.createElement(
-    "script"
-  );
-
-  newScript.type =
-  oldScript.type ||
-  "module";
-
-  newScript.textContent =
-  oldScript.textContent;
-
-  oldScript.parentNode
-  .replaceChild(
-    newScript,
-    oldScript
-  );
-
+  scripts.forEach(oldScript=>{
+    const newScript = document.createElement("script");
+    newScript.type = oldScript.type || "module";
+    newScript.textContent = oldScript.textContent;
+    oldScript.parentNode.replaceChild(newScript, oldScript);
+  });
 }
 
-}
+document.addEventListener("click",(e)=>{
 
-catch(err){
+  const btn = e.target.closest("[data-page]");
+  if(!btn) return;
 
-console.error(err);
+  loadPage(btn.dataset.page);
+});
 
-container.innerHTML = `
-
-<div class="card">
-
-  Failed To Load Page
-
-</div>
-
-`;
-
-}
-
-}
-
-document.addEventListener(
-"click",
-(e)=>{
-
-const btn =
-e.target.closest(
-  "[data-page]"
-);
-
-if(!btn) return;
-
-loadPage(
-  btn.dataset.page
-);
-
-}
-);
-
-window.logout =
-async()=>{
-
-await signOut(
-auth
-);
-
-location.href =
-"login.html";
-
+window.logout = async()=>{
+  await signOut(auth);
+  location.href = "login.html";
 };
