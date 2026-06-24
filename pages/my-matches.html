@@ -1,20 +1,8 @@
-<div class="card">
-
-  <div class="card-title">
+<div class="card">  <div class="card-title">
     My Matches
-  </div>
-
-</div>
-
-<div id="myMatches">
-
-  <div class="card">
+  </div></div><div id="myMatches">  <div class="card">
     Loading...
-  </div>
-
-</div>
-
-<script type="module">
+  </div></div><script type="module">
 
 import { auth, db }
 from "./js/firebase.js";
@@ -27,54 +15,88 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
+import {
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
 const container =
 document.getElementById("myMatches");
 
-const user = auth.currentUser;
+onAuthStateChanged(
+  auth,
+  async(user)=>{
 
-if(user){
+    if(!user){
 
-  const q = query(
-    collection(db,"joinedMatches"),
-    where("uid","==",user.uid)
-  );
-
-  const snap = await getDocs(q);
-
-  if(snap.empty){
-
-    container.innerHTML = `
-    <div class="card">
-      No Joined Match
-    </div>
-    `;
-
-  }else{
-
-    let html="";
-
-    snap.forEach(doc=>{
-
-      const data = doc.data();
-
-      html += `
-      <div class="tournament-card">
-
-        <div class="tournament-title">
-          ${data.tournamentTitle}
-        </div>
-
-        <div class="tournament-meta">
-          <span>Joined</span>
-          <span>✓</span>
-        </div>
-
+      container.innerHTML = `
+      <div class="card">
+        Login Required
       </div>
       `;
-    });
+      return;
+    }
 
-    container.innerHTML = html;
+    try{
+
+      const q = query(
+        collection(db,"joinedMatches"),
+        where("uid","==",user.uid)
+      );
+
+      const snap =
+      await getDocs(q);
+
+      if(snap.empty){
+
+        container.innerHTML = `
+        <div class="card">
+          No Joined Match
+        </div>
+        `;
+        return;
+      }
+
+      let html = "";
+
+      snap.forEach(doc=>{
+
+        const data =
+        doc.data();
+
+        html += `
+
+        <div class="tournament-card">
+
+          <div class="tournament-title">
+            ${data.tournamentTitle}
+          </div>
+
+          <div class="tournament-meta">
+            <span>Joined</span>
+            <span>✓</span>
+          </div>
+
+        </div>
+
+        `;
+      });
+
+      container.innerHTML = html;
+
+    }
+
+    catch(err){
+
+      container.innerHTML = `
+      <div class="card">
+        Error: ${err.message}
+      </div>
+      `;
+
+    }
+
   }
-}
+);
 
-</script>
+  </script>
