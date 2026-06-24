@@ -1,138 +1,126 @@
 import { auth } from "./firebase.js";
 
 import {
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 const container =
 document.getElementById(
-  "pageContainer"
+"pageContainer"
 );
 
 onAuthStateChanged(
-  auth,
-  (user)=>{
+auth,
+(user)=>{
 
-    if(!user){
+if(!user){
 
-      location.href =
-      "login.html";
+  location.href =
+  "login.html";
 
-      return;
+  return;
+}
 
-    }
+loadPage(
+  "dashboard"
+);
 
-    loadPage(
-      "dashboard"
-    );
-
-  }
+}
 );
 
 async function loadPage(page){
 
-  try{
+try{
 
-    const res =
-    await fetch(
-      `pages/${page}.html`
-    );
+const res =
+await fetch(
+  `pages/${page}.html`
+);
 
-    const html =
-    await res.text();
+const html =
+await res.text();
 
-    container.innerHTML =
-    html;
+container.innerHTML =
+html;
 
-    // Execute page scripts
+const scripts =
+container.querySelectorAll(
+  "script"
+);
 
-    const scripts =
-    container.querySelectorAll(
-      "script"
-    );
+for(
+  const oldScript
+  of scripts
+){
 
-    scripts.forEach(
-      (oldScript)=>{
+  const newScript =
+  document.createElement(
+    "script"
+  );
 
-        const newScript =
-        document.createElement(
-          "script"
-        );
+  newScript.type =
+  oldScript.type ||
+  "module";
 
-        if(
-          oldScript.type
-        ){
-          newScript.type =
-          oldScript.type;
-        }
+  newScript.textContent =
+  oldScript.textContent;
 
-        if(
-          oldScript.src
-        ){
-          newScript.src =
-          oldScript.src;
-        }
-        else{
-          newScript.textContent =
-          oldScript.textContent;
-        }
+  oldScript.parentNode
+  .replaceChild(
+    newScript,
+    oldScript
+  );
 
-        document.body.appendChild(
-          newScript
-        );
+}
 
-        oldScript.remove();
+}
 
-      }
-    );
+catch(err){
 
-  }
+console.error(err);
 
-  catch(err){
+container.innerHTML = `
 
-    console.error(err);
+<div class="card">
 
-    container.innerHTML = `
+  Failed To Load Page
 
-    <div class="card">
+</div>
 
-    Failed To Load Page
+`;
 
-    </div>
-
-    `;
-
-  }
+}
 
 }
 
 document.addEventListener(
-  "click",
-  (e)=>{
+"click",
+(e)=>{
 
-    const btn =
-    e.target.closest(
-      "[data-page]"
-    );
+const btn =
+e.target.closest(
+  "[data-page]"
+);
 
-    if(!btn) return;
+if(!btn) return;
 
-    loadPage(
-      btn.dataset.page
-    );
+loadPage(
+  btn.dataset.page
+);
 
-  }
+}
 );
 
 window.logout =
 async()=>{
 
-  await signOut(
-    auth
-  );
+await signOut(
+auth
+);
 
-  location.href =
-  "login.html";
+location.href =
+"login.html";
 
 };
