@@ -1,27 +1,24 @@
 <div class="card">
-
   <div class="card-title">
     Live Tournaments
   </div>
-
 </div>
 
 <div id="tournamentList">
-
   <div class="card">
     Loading tournaments...
   </div>
-
 </div>
 
 <script type="module">
 
-import { db }
+import { auth, db }
 from "./js/firebase.js";
 
 import {
   collection,
-  getDocs
+  getDocs,
+  addDoc
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
@@ -44,62 +41,58 @@ async function loadTournaments(){
 
     if(snapshot.empty){
 
-      list.innerHTML=`
-
+      list.innerHTML = `
       <div class="card">
-
       No Tournament Available
-
       </div>
-
       `;
 
       return;
-
     }
 
-    let html="";
+    let html = "";
 
     snapshot.forEach(doc=>{
 
-      const t=
+      const t =
       doc.data();
 
       html += `
 
       <div class="tournament-card">
 
-      <div class="tournament-title">
-      ${t.title || "Tournament"}
-      </div>
+        <div class="tournament-title">
+        ${t.title || "Tournament"}
+        </div>
 
-      <div class="tournament-meta">
+        <div class="tournament-meta">
 
-      <span>
-      Entry ₹${t.entryFee || 0}
-      </span>
+          <span>
+          Entry ₹${t.entryFee || 0}
+          </span>
 
-      <span>
-      Prize ₹${t.prize || 0}
-      </span>
+          <span>
+          Prize ₹${t.prize || 0}
+          </span>
 
-      </div>
+        </div>
 
-      <br>
+        <br>
 
-      <button
-class="btn btn-primary joinBtn"
-data-id="${doc.id}"
-data-title="${t.title}">
-Join Tournament
-</button>
+        <button
+        class="btn btn-primary joinBtn"
+        data-id="${doc.id}"
+        data-title="${t.title}">
+        Join Tournament
+        </button>
+
       </div>
 
       `;
 
     });
 
-    list.innerHTML=html;
+    list.innerHTML = html;
 
   }
 
@@ -107,14 +100,10 @@ Join Tournament
 
     console.error(err);
 
-    list.innerHTML=`
-
+    list.innerHTML = `
     <div class="card">
-
-    Failed To Load Tournaments
-
+    Error: ${err.message}
     </div>
-
     `;
 
   }
@@ -122,5 +111,65 @@ Join Tournament
 }
 
 loadTournaments();
+
+document.addEventListener(
+  "click",
+  async(e)=>{
+
+    const btn =
+    e.target.closest(
+      ".joinBtn"
+    );
+
+    if(!btn) return;
+
+    try{
+
+      const user =
+      auth.currentUser;
+
+      if(!user){
+
+        alert(
+          "Please Login First"
+        );
+
+        return;
+      }
+
+      await addDoc(
+        collection(
+          db,
+          "joinedMatches"
+        ),
+        {
+          uid:user.uid,
+          tournamentId:
+          btn.dataset.id,
+          tournamentTitle:
+          btn.dataset.title,
+          joinedAt:
+          Date.now()
+        }
+      );
+
+      alert(
+        "Tournament Joined Successfully"
+      );
+
+    }
+
+    catch(err){
+
+      console.error(err);
+
+      alert(
+        err.message
+      );
+
+    }
+
+  }
+);
 
 </script>
