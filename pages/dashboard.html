@@ -1,1 +1,117 @@
+<div class="wallet-card">
 
+  <div class="wallet-label">
+    Wallet Balance
+  </div>
+
+  <div class="wallet-balance" id="walletBalance">
+    ₹0
+  </div>
+
+</div>
+
+<div class="card">
+
+  <div class="card-title">
+    Player Statistics
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-box">
+      <div class="stat-value" id="matchesPlayed">
+        0
+      </div>
+
+      <div class="stat-label">
+        Matches
+      </div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-value" id="wins">
+        0
+      </div>
+
+      <div class="stat-label">
+        Wins
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="card">
+
+  <div class="card-title">
+    Quick Actions
+  </div>
+
+  <button
+    class="btn btn-primary"
+    data-page="tournaments">
+
+    Browse Tournaments
+
+  </button>
+
+</div>
+
+<div class="card">
+
+  <div class="card-title">
+    Upcoming Tournament
+  </div>
+
+  <div id="upcomingTournament">
+
+    No Tournament Available
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import { db, auth }
+from "../js/firebase.js";
+
+import {
+  doc,
+  getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const user = auth.currentUser;
+
+if(user){
+
+  const snap = await getDoc(
+    doc(db,"users",user.uid)
+  );
+
+  if(snap.exists()){
+
+    const data = snap.data();
+
+    document.getElementById(
+      "walletBalance"
+    ).innerText =
+      "₹" + (data.wallet || 0);
+
+    document.getElementById(
+      "matchesPlayed"
+    ).innerText =
+      data.matchesPlayed || 0;
+
+    document.getElementById(
+      "wins"
+    ).innerText =
+      data.wins || 0;
+
+  }
+
+}
+
+</script>
