@@ -2,15 +2,11 @@
   <div class="card-title">
     Live Tournaments
   </div>
-</div>
-
-<div id="tournamentList">
+</div><div id="tournamentList">
   <div class="card">
     Loading tournaments...
   </div>
-</div>
-
-<script type="module">
+</div><script type="module">
 
 import { auth, db }
 from "./js/firebase.js";
@@ -23,9 +19,7 @@ import {
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const list =
-document.getElementById(
-  "tournamentList"
-);
+document.getElementById("tournamentList");
 
 async function loadTournaments(){
 
@@ -33,17 +27,14 @@ async function loadTournaments(){
 
     const snapshot =
     await getDocs(
-      collection(
-        db,
-        "tournaments"
-      )
+      collection(db,"tournaments")
     );
 
     if(snapshot.empty){
 
       list.innerHTML = `
       <div class="card">
-      No Tournament Available
+        No Tournament Available
       </div>
       `;
 
@@ -54,42 +45,33 @@ async function loadTournaments(){
 
     snapshot.forEach(doc=>{
 
-      const t =
-      doc.data();
+      const t = doc.data();
 
       html += `
 
       <div class="tournament-card">
 
         <div class="tournament-title">
-        ${t.title || "Tournament"}
+          ${t.title || "Tournament"}
         </div>
 
         <div class="tournament-meta">
-
-          <span>
-          Entry ₹${t.entryFee || 0}
-          </span>
-
-          <span>
-          Prize ₹${t.prize || 0}
-          </span>
-
+          <span>Entry ₹${t.entryFee || 0}</span>
+          <span>Prize ₹${t.prize || 0}</span>
         </div>
 
         <br>
 
         <button
-        class="btn btn-primary joinBtn"
-        data-id="${doc.id}"
-        data-title="${t.title}">
-        Join Tournament
+          class="btn btn-primary joinBtn"
+          data-id="${doc.id}"
+          data-title="${t.title}">
+          Join Tournament
         </button>
 
       </div>
 
       `;
-
     });
 
     list.innerHTML = html;
@@ -102,12 +84,10 @@ async function loadTournaments(){
 
     list.innerHTML = `
     <div class="card">
-    Error: ${err.message}
+      Error: ${err.message}
     </div>
     `;
-
   }
-
 }
 
 loadTournaments();
@@ -117,11 +97,11 @@ document.addEventListener(
   async(e)=>{
 
     const btn =
-    e.target.closest(
-      ".joinBtn"
-    );
+    e.target.closest(".joinBtn");
 
     if(!btn) return;
+
+    alert("Button Clicked");
 
     try{
 
@@ -130,26 +110,17 @@ document.addEventListener(
 
       if(!user){
 
-        alert(
-          "Please Login First"
-        );
-
+        alert("Please Login First");
         return;
       }
 
       await addDoc(
-        collection(
-          db,
-          "joinedMatches"
-        ),
+        collection(db,"joinedMatches"),
         {
           uid:user.uid,
-          tournamentId:
-          btn.dataset.id,
-          tournamentTitle:
-          btn.dataset.title,
-          joinedAt:
-          Date.now()
+          tournamentId:btn.dataset.id,
+          tournamentTitle:btn.dataset.title,
+          joinedAt:Date.now()
         }
       );
 
@@ -161,11 +132,8 @@ document.addEventListener(
 
     catch(err){
 
+      alert(err.message);
       console.error(err);
-
-      alert(
-        err.message
-      );
 
     }
 
