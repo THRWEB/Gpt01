@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. GLOBAL VARIABLES & RESET
+   ========================================================================== */
 :root {
   --bg: #0b1020;
   --card: rgba(25, 30, 45, 0.6);
@@ -33,7 +36,7 @@ body {
   min-height: 100vh;
 }
 
-/* ---------- Scroll ---------- */
+/* ---------- Custom Scrollbar ---------- */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -42,7 +45,11 @@ body {
   border-radius: 50px;
 }
 
-/* ---------- Top Header (New Design) ---------- */
+/* ==========================================================================
+   2. LAYOUT & COMPONENTS (HEADER, NAV, CONTAINERS)
+   ========================================================================== */
+
+/* ---------- Top Header ---------- */
 .dashboard-header {
   height: 70px;
   display: flex;
@@ -111,10 +118,10 @@ body {
 
 /* ---------- Page Container ---------- */
 #pageContainer {
-  padding: 16px 16px 110px; /* Bottom padding increased for the large refer button */
+  padding: 16px 16px 110px; /* Space for Bottom Nav & central button */
 }
 
-/* ---------- Promo Banner (Join Now) ---------- */
+/* ---------- Promo Banner ---------- */
 .promo-banner {
   background: linear-gradient(135deg, #4f1593, #7c3aed);
   border-radius: 24px;
@@ -137,7 +144,7 @@ body {
   margin-bottom: 18px;
 }
 
-/* ---------- Buttons ---------- */
+/* ---------- Global Buttons ---------- */
 .btn {
   width: 100%;
   border: none;
@@ -158,74 +165,7 @@ body {
   transform: scale(0.96);
 }
 
-/* ---------- Tournament Cards ---------- */
-.tournament-card {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  margin-bottom: 14px;
-  gap: 14px;
-  transition: 0.3s;
-}
-
-.t-image img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.t-details {
-  flex: 1;
-}
-
-.t-tag-row {
-  margin-bottom: 4px;
-}
-
-.t-tag {
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text2);
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.tag-orange { color: #F97316; border-color: rgba(249, 115, 22, 0.3); }
-.tag-blue { color: #38BDF8; border-color: rgba(56, 189, 248, 0.3); }
-
-.t-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: white;
-  margin-top: 4px;
-}
-
-.btn-join-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 30px;
-  padding: 8px 18px;
-  color: white;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-join-card:active {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(0.95);
-}
-
-/* ---------- Bottom Nav (New Design with Center Button) ---------- */
+/* ---------- Bottom Navigation ---------- */
 .bottom-nav {
   position: fixed;
   left: 0;
@@ -266,23 +206,22 @@ body {
   font-weight: 600;
 }
 
-/* Active state for normal nav items */
 .nav-item:active .nav-icon {
   filter: grayscale(0);
   opacity: 1;
 }
 
-/* The Magic Central 'Refer' Button */
+/* Center Magic Central Refer Button */
 .refer-btn {
   position: relative;
-  bottom: 25px; /* Pushes it upwards out of the bar */
+  bottom: 25px;
   background: var(--yellow);
   width: 65px;
   height: 65px;
   border-radius: 50%;
   justify-content: center;
   box-shadow: 0 0 25px var(--yellow-glow);
-  border: 5px solid #0c121e; /* Matches body background */
+  border: 5px solid #0c121e;
   color: #000;
 }
 
@@ -297,4 +236,189 @@ body {
   font-weight: 800;
   color: #000;
   margin-top: -2px;
+}
+
+/* ==========================================================================
+   3. PREMIUM CYBER-TECH MATCH CARDS & ACCENTS
+   ========================================================================== */
+.es-main-section {
+  position: relative;
+  min-height: 92px;
+  height: 92px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  margin-bottom: 16px;
+  background: linear-gradient(145deg, #151f32 0%, #0a0f18 100%);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px; 
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.es-main-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: transparent;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+  z-index: 4;
+}
+
+/* Dynamic Hover Neon Accents */
+.es-main-section[data-category="soloc"]:hover { border-color: rgba(96, 165, 250, 0.3); }
+.es-main-section[data-category="soloc"]:hover::before { background: #60a5fa; box-shadow: 2px 0 12px #60a5fa; }
+
+.es-main-section[data-category="solocs"]:hover { border-color: rgba(251, 146, 60, 0.3); }
+.es-main-section[data-category="solocs"]:hover::before { background: #fb923c; box-shadow: 2px 0 12px #fb923c; }
+
+.es-main-section[data-category="squadc"]:hover { border-color: rgba(250, 204, 21, 0.3); }
+.es-main-section[data-category="squadc"]:hover::before { background: var(--yellow); box-shadow: 2px 0 12px var(--yellow); }
+
+.es-main-section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+}
+
+/* Controls Alignment */
+.left-controls, 
+.right-controls { 
+  display: flex; 
+  align-items: center; 
+  z-index: 3; 
+  flex: 0 0 auto; 
+}
+
+/* Circular Dynamic Thumbnails */
+.card-thumb {
+  position: relative;
+  width: 56px; 
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,.08);
+  box-shadow: 0 3px 8px rgba(0,0,0,.4);
+  z-index: 2;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  background: #192231;
+}
+
+.es-main-section:hover .card-thumb {
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: scale(1.02);
+}
+
+.card-thumb img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  border-radius: 50%; 
+}
+
+/* Card Information & Badges */
+.card-content {
+  position: relative;
+  z-index: 3;
+  padding: 0 16px;
+  height: 100%;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center;
+  flex: 1; 
+  overflow: hidden;
+}
+
+.card-header { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 5px; 
+}
+
+.card-badge {
+  display: inline-flex; 
+  align-items: center; 
+  gap: 6px;
+  width: max-content; 
+  padding: 3px 10px;
+  border-radius: 8px; 
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+.status-dot { 
+  width: 6px; 
+  height: 6px; 
+  border-radius: 50%; 
+  flex-shrink: 0; 
+}
+
+.badge-text { 
+  color: var(--text2); 
+  font-size: 11px; 
+  font-weight: 600; 
+  letter-spacing: .4px; 
+  text-transform: uppercase; 
+}
+
+.card-title { 
+  color: var(--text); 
+  font-size: 15px; 
+  font-weight: 700; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+/* Circular Sci-Fi Join Button */
+.join-btn {
+  width: 56px; 
+  height: 56px;
+  border-radius: 50%;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(255,255,255,0.01));
+  color: var(--cyan); 
+  font-weight: 700;
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+  z-index: 4; 
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+  font-size: 13px;
+}
+
+.join-btn:hover {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(255,255,255,0.04));
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   4. ANIMATION TEMPLATES
+   ========================================================================== */
+.card-thumb.swiped { 
+  animation: swipeOut 0.5s ease forwards; 
+}
+
+@keyframes swipeOut {
+  0% { transform: translateX(0) scale(1); opacity: 1; }
+  100% { transform: translateX(200px) scale(1.1); opacity: 0; }
+}
+
+.thumb-clone {
+  position: fixed !important; 
+  z-index: 9999;
+  pointer-events: none; 
+  transform-origin: center center !important;
+  will-change: transform, opacity; 
+  background: #151f32;
 }
