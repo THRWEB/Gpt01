@@ -5,7 +5,7 @@
 </div><div class="tournament-card">  <div class="tournament-title">
     Current Balance
   </div>  <h2 id="walletBalance">
-    ₹0
+    Loading...
   </h2></div><div class="card" style="margin-top:15px;">  <button class="btn btn-primary">
     Deposit
   </button><br><br>
@@ -16,4 +16,44 @@
     Wallet History
   </div>  <div>
     No Transactions Found
-  </div></div>
+  </div></div><script type="module">
+
+import { auth, db }
+from "./js/firebase.js";
+
+import {
+  doc,
+  getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+import {
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+onAuthStateChanged(auth,async(user)=>{
+
+  if(!user) return;
+
+  const ref =
+  doc(db,"users",user.uid);
+
+  const snap =
+  await getDoc(ref);
+
+  if(snap.exists()){
+
+    document
+    .getElementById(
+      "walletBalance"
+    )
+    .innerText =
+    "₹" +
+    (snap.data().balance || 0);
+
+  }
+
+});
+
+  </script>
