@@ -14,12 +14,17 @@ from "./js/firebase.js";
 import {
   collection,
   getDocs,
-  addDoc
+  addDoc,
+  doc,
+  getDoc,
+  updateDoc
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const list =
-document.getElementById("tournamentList");
+document.getElementById(
+  "tournamentList"
+);
 
 async function loadTournaments(){
 
@@ -27,7 +32,10 @@ async function loadTournaments(){
 
     const snapshot =
     await getDocs(
-      collection(db,"tournaments")
+      collection(
+        db,
+        "tournaments"
+      )
     );
 
     if(snapshot.empty){
@@ -43,9 +51,10 @@ async function loadTournaments(){
 
     let html = "";
 
-    snapshot.forEach(doc=>{
+    snapshot.forEach(docSnap=>{
 
-      const t = doc.data();
+      const t =
+      docSnap.data();
 
       html += `
 
@@ -56,15 +65,20 @@ async function loadTournaments(){
         </div>
 
         <div class="tournament-meta">
-          <span>Entry ₹${t.entryFee || 0}</span>
-          <span>Prize ₹${t.prize || 0}</span>
+          <span>
+            Entry ₹${t.entryFee || 0}
+          </span>
+
+          <span>
+            Prize ₹${t.prize || 0}
+          </span>
         </div>
 
         <br>
 
         <button
           class="btn btn-primary joinBtn"
-          data-id="${doc.id}"
+          data-id="${docSnap.id}"
           data-title="${t.title}">
           Join Tournament
         </button>
@@ -88,6 +102,7 @@ async function loadTournaments(){
     </div>
     `;
   }
+
 }
 
 loadTournaments();
@@ -97,7 +112,9 @@ list.addEventListener(
   async(e)=>{
 
     const btn =
-    e.target.closest(".joinBtn");
+    e.target.closest(
+      ".joinBtn"
+    );
 
     if(!btn) return;
 
@@ -108,17 +125,83 @@ list.addEventListener(
 
       if(!user){
 
-        alert("Please Login First");
+        alert(
+          "Please Login First"
+        );
+
         return;
       }
 
+      const tournamentRef =
+      doc(
+        db,
+        "tournaments",
+        btn.dataset.id
+      );
+
+      const tournamentSnap =
+      await getDoc(
+        tournamentRef
+      );
+
+      const tournament =
+      tournamentSnap.data();
+
+      const entryFee =
+      Number(
+        tournament.entryFee || 0
+      );
+
+      const userRef =
+      doc(
+        db,
+        "users",
+        user.uid
+      );
+
+      const userSnap =
+      await getDoc(
+        userRef
+      );
+
+      const balance =
+      userSnap.data().balance || 0;
+
+      if(balance < entryFee){
+
+        alert(
+          "Insufficient Wallet Balance"
+        );
+
+        return;
+      }
+
+      await updateDoc(
+        userRef,
+        {
+          balance:
+          balance - entryFee
+        }
+      );
+
       await addDoc(
-        collection(db,"joinedMatches"),
+        collection(
+          db,
+          "joinedMatches"
+        ),
         {
           uid:user.uid,
-          tournamentId:btn.dataset.id,
-          tournamentTitle:btn.dataset.title,
-          joinedAt:Date.now()
+          tournamentId:
+          btn.dataset.id,
+
+          tournamentTitle:
+          btn.dataset.title,
+
+          entryFee:
+          entryFee,
+
+          joinedAt:
+          Date.now()
         }
       );
 
@@ -131,7 +214,10 @@ list.addEventListener(
     catch(err){
 
       console.error(err);
-      alert(err.message);
+
+      alert(
+        err.message
+      );
 
     }
 
