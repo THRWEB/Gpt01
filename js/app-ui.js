@@ -5,12 +5,6 @@ onAuthStateChanged,
 signOut
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-import {
-doc,
-getDoc,
-setDoc
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
 const container =
 document.getElementById(
 "pageContainer"
@@ -26,29 +20,6 @@ if(!user){
   "login.html";
 
   return;
-}
-
-const userRef =
-doc(
-  db,
-  "users",
-  user.uid
-);
-
-const userSnap =
-await getDoc(
-  userRef
-);
-
-if(!userSnap.exists()){
-
-  await setDoc(
-    userRef,
-    {
-      balance:100
-    }
-  );
-
 }
 
 await loadPage(
