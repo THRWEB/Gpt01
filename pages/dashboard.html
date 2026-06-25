@@ -1,12 +1,60 @@
-<div class="promo-banner">
-  <h2>Join Tournaments.</h2>
-  <p>Win big rewards & prove your skills!</p>
-  <button class="btn btn-yellow" data-page="tournaments">JOIN NOW</button>
+<!-- Premium Mega Promo Banner (1000092333.jpg) -->
+<div class="mega-promo-banner">
+  <span class="banner-badge">Seasonal Open</span>
+  <h2 class="banner-main-title">Mega <span>Tournament</span></h2>
+  
+  <div class="banner-info-row">
+    <div class="banner-prize-box">
+      <p>Prize Pool</p>
+      <h4>₹1,00,000</h4>
+    </div>
+    <button class="btn-banner-join" data-page="tournaments">Join Now</button>
+  </div>
+</div>
+
+<!-- Select Arena Horizontal Slider (1000092333.jpg) -->
+<div class="arena-selection-section">
+  <div class="section-header-row">
+    <span class="section-title">Select Arena</span>
+    <span class="section-subtitle">Swipe For More</span>
+  </div>
+
+  <div class="arena-swiper-track">
+    <!-- Card 1: BGMI -->
+    <div class="arena-slide-card" data-arena="bgmi">
+      <div class="arena-card-icon">⚔️</div>
+      <div class="arena-card-name">BGMI</div>
+      <div class="arena-active-badge">12 Active</div>
+    </div>
+    <!-- Card 2: Free Fire Max -->
+    <div class="arena-slide-card" data-arena="ff">
+      <div class="arena-card-icon">🎯</div>
+      <div class="arena-card-name">Free Fire Max</div>
+      <div class="arena-active-badge">8 Active</div>
+    </div>
+    <!-- Card 3: COD Mobile -->
+    <div class="arena-slide-card" data-arena="cod">
+      <div class="arena-card-icon">🛡️</div>
+      <div class="arena-card-name">COD Mobile</div>
+      <div class="arena-active-badge">5 Active</div>
+    </div>
+    <!-- Card 4: Ludo King -->
+    <div class="arena-slide-card" data-arena="ludo">
+      <div class="arena-card-icon">🎲</div>
+      <div class="arena-card-name">Ludo King</div>
+      <div class="arena-active-badge">25 Active</div>
+    </div>
+  </div>
+</div>
+
+<!-- Active Battles Listing Structure -->
+<div class="section-header-row" style="margin-bottom: 12px;">
+  <span class="section-title">Active Battles</span>
 </div>
 
 <div class="tournament-section">
   <div id="tournamentListContainer">
-    <div class="loading-text" style="text-align:center; color:var(--text2); padding:20px; font-weight:600; class="animate-pulse"">
+    <div class="loading-text" style="text-align:center; color:var(--text2); padding:20px; font-weight:600;">
       Loading Premium Matches...
     </div>
   </div>
@@ -33,7 +81,7 @@ async function loadUserBalance() {
   }
 }
 
-// গেম মোড অনুযায়ী কার্ডের জন্য ক্যাটাগরি, কালার ও ইমোজি ডিজাইন ম্যাপ করা
+// গেম মোড অনুযায়ী কার্ডের ডিজাইন এসাইন করা
 function getCategoryDesign(mode, type) {
     const m = (mode || '').toLowerCase();
     const t = (type || '').toLowerCase();
@@ -42,10 +90,10 @@ function getCategoryDesign(mode, type) {
     if(m.includes('solo') && t.includes('cs')) return { cat: 'solocs', color: '#fb923c', icon: '🏆' };
     if(m.includes('squad')) return { cat: 'squadc', color: '#facc15', icon: '🛡️' };
     
-    return { cat: 'duoc', color: '#38bdf8', icon: '🎯' }; // Default fallback
+    return { cat: 'duoc', color: '#38bdf8', icon: '🎯' };
 }
 
-// ফায়ারবেস থেকে রিয়েল-টাইম ডেটা দিয়ে প্রিমিয়াম কার্ড রেন্ডার করা
+// ফায়ারবেস থেকে ডেটা এনে রেন্ডার করা
 async function loadTournaments() {
   const container = document.getElementById("tournamentListContainer");
   if (!container) return;
@@ -68,7 +116,7 @@ async function loadTournaments() {
       const design = getCategoryDesign(t.mode, t.type);
       const label = `${t.mode || 'SOLO'} : ${t.type || 'CLASSIC'}`;
       const title = t.title || 'New Tournament';
-      const img = t.image || 'https://i.postimg.cc/rsf7yB1M/1768308154801.jpg'; // Premium standard fallback fallback
+      const img = t.image || 'https://i.postimg.cc/rsf7yB1M/1768308154801.jpg';
 
       htmlTemplate += `
         <section class="es-main-section" data-category="${design.cat}" data-id="${id}">
@@ -80,9 +128,11 @@ async function loadTournaments() {
 
             <div class="card-content">
                 <div class="card-header">
-                    <div class="card-badge">
-                        <div class="status-dot" style="background:${design.color}; box-shadow:0 0 10px ${design.color}"></div>
-                        <span class="badge-text">${label}</span>
+                    <div class="input-box-group">
+                        <div class="card-badge">
+                            <div class="status-dot" style="background:${design.color}; box-shadow:0 0 10px ${design.color}"></div>
+                            <span class="badge-text">${label}</span>
+                        </div>
                     </div>
                     <div class="card-title">
                         <span class="card-icon">${design.icon}</span> ${title}
@@ -105,7 +155,7 @@ async function loadTournaments() {
   }
 }
 
-// গ্লোবাল ইভেন্ট লিসেনার দিয়ে অ্যানিমেশন ও রাউটিং হ্যান্ডেল করা
+// ইভেন্ট ডেলিগেশন রাউটিং হ্যান্ডেলার
 document.addEventListener('click', function(e) {
     const btn = e.target.closest('.join-btn');
     if (!btn) return;
@@ -124,7 +174,6 @@ document.addEventListener('click', function(e) {
     });
 });
 
-// ফ্লাইং থাম্বনেইল ম্যাজিক অ্যানিমেশন লজিক
 function animateThumbToTarget(thumb, targetEl, cb) {
     const srcRect = thumb.getBoundingClientRect();
     const tgtRect = targetEl.getBoundingClientRect();
@@ -166,7 +215,6 @@ function animateThumbToTarget(thumb, targetEl, cb) {
     });
 }
 
-// ফায়ারবেস অথেনটিকেশন ইনিশিয়ালাইজেশনের জন্য সামান্য বাফার ডিলে
 setTimeout(() => {
   loadUserBalance();
   loadTournaments();
