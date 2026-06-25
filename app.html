@@ -1,73 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>FFTW</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProPlayerAdda - Elite Arena</title>
+  
+  <!-- Premium Gaming Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
-</head>
+  
+  <style>
+    /* Inline fixes for the Global Header to perfectly match image 1000092333.jpg */
+    .dashboard-header {
+      height: 75px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #060913; /* Deep tech dark */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
 
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon-box {
+      background: linear-gradient(135deg, #fcd34d, #d97706);
+      color: #000000;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 16px;
+      box-shadow: 0 0 15px rgba(217, 119, 6, 0.25);
+    }
+
+    .logo-main-text {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-style: italic;
+      font-size: 18px;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .logo-main-text span {
+      color: var(--yellow);
+    }
+
+    .logo-sub-text {
+      font-size: 8px;
+      font-weight: 700;
+      color: #4b5563;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* Wallet Button Redesign matching screenshot */
+    .wallet-status-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .wallet-status-btn:active {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .wallet-currency-symbol {
+      color: var(--text2);
+      font-size: 13px;
+    }
+
+    .wallet-add-plus {
+      background: var(--yellow);
+      color: #000000;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+      margin-left: 2px;
+    }
+
+    /* Notification Bell with Badge */
+    .notification-btn {
+      position: relative;
+    }
+
+    .notification-btn .badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 6px;
+      height: 6px;
+      background: var(--danger);
+      border-radius: 50%;
+      display: none; /* Can be enabled via js if notifications exist */
+    }
+  </style>
+</head>
 <body>
 
-<!-- নতুন টপ হেডার (app.html এর ভেতরেই ফিক্সড থাকবে) -->
-<header class="dashboard-header">
-  <div class="logo-area">
-    <span class="logo-icon">🎮</span>
-    <span class="logo-text">FFTW</span>
-  </div>
-  <div class="header-actions">
-    <button class="icon-btn notification-btn">
-      🔔<span class="badge"></span>
+  <!-- Top Global Header -->
+  <header class="dashboard-header">
+    <div class="logo-area">
+      <div class="logo-icon-box">🏆</div>
+      <div>
+        <span class="logo-main-text">PROPLAYER<span>ADDA</span></span>
+        <span class="logo-sub-text">E-Sports Arena</span>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <!-- Notification Icon Button -->
+      <button class="icon-btn notification-btn">
+        🔔<span class="badge"></span>
+      </button>
+      
+      <!-- Premium Wallet Button with ₹ & + Sign -->
+      <button class="wallet-status-btn" data-page="wallet">
+        <span class="wallet-currency-symbol">₹</span>
+        <span id="totalWalletBalance">0</span>
+        <span class="wallet-add-plus">+</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Dynamic Views (e.g., dashboard, tournaments) render inside this wrapper -->
+  <main id="pageContainer">
+    <!-- Single Page views will inject dynamically here -->
+  </main>
+
+  <!-- Modern Curved Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    
+    <button class="nav-item" data-page="dashboard">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-text">Home</span>
     </button>
-    <!-- গ্লোবাল ওয়ালেট ব্যালেন্স যা ডেটাবেস থেকে লোড হবে -->
-    <button class="wallet-status-btn" data-page="wallet">
-      💼 <span id="totalWalletBalance">0</span>
+
+    <button class="nav-item" data-page="my-matches">
+      <span class="nav-icon">🎮</span>
+      <span class="nav-text">Matches</span>
     </button>
-  </div>
-</header>
 
-<!-- ডাইনামিক পেজগুলো (যেমন: dashboard, tournaments) এখানে লোড হবে -->
-<div id="pageContainer">
-</div>
+    <!-- Elevated Special Central 'Refer' Button -->
+    <button class="nav-item refer-btn" data-page="refer">
+      <span class="nav-icon">🫂</span>
+      <span class="nav-text">Refer</span>
+    </button>
 
-<!-- নতুন ডিজাইনের বটম নেভিগেশন বার -->
-<nav class="bottom-nav">
-  
-  <button class="nav-item" data-page="dashboard">
-    <span class="nav-icon">🏠</span>
-    <span class="nav-text">Home</span>
-  </button>
+    <button class="nav-item" data-page="profile">
+      <span class="nav-icon">👤</span>
+      <span class="nav-text">Profile</span>
+    </button>
 
-  <button class="nav-item" data-page="my-matches">
-    <span class="nav-icon">🎮</span>
-    <span class="nav-text">Matches</span>
-  </button>
+    <button class="nav-item" data-page="wallet">
+      <span class="nav-icon">💰</span>
+      <span class="nav-text">Wallet</span>
+    </button>
+    
+    <!-- Admin Control Trigger Panel (Hidden by default) -->
+    <button class="nav-item" data-page="admin" style="display:none;" id="adminNavbarTab">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-text">Admin</span>
+    </button>
 
-  <!-- স্পেশাল 'Refer' বাটন (এটি ছবির মতো মাঝখানে বড় করে দেখানোর জন্য আলাদা ক্লাস দেওয়া হলো) -->
-  <button class="nav-item refer-btn" data-page="refer">
-    <span class="nav-icon">🫂</span>
-    <span class="nav-text">Refer</span>
-  </button>
+  </nav>
 
-  <button class="nav-item" data-page="profile">
-    <span class="nav-icon">👤</span>
-    <span class="nav-text">Profile</span>
-  </button>
-
-  <button class="nav-item" data-page="wallet">
-    <span class="nav-icon">💰</span>
-    <span class="nav-text">Wallet</span>
-  </button>
-  
-  <!-- অ্যাডমিন বাটন -->
-  <button class="nav-item" data-page="admin" style="display:none;">
-    <span class="nav-icon">⚙️</span>
-    <span class="nav-text">Admin</span>
-  </button>
-
-</nav>
-
-<!-- গ্লোবাল স্ক্রিপ্ট -->
-<script type="module" src="js/app-ui.js"></script>
+  <!-- Global Controller Engine Logic Script Link -->
+  <script type="module" src="js/app-ui.js"></script>
 
 </body>
 </html>
