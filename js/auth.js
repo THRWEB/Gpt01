@@ -93,7 +93,7 @@ async function register() {
         uid: user.uid,
         email: user.email,
         name: "Player",
-        deposit: 0,          // wallet সরিয়ে deposit যোগ করা হয়েছে
+        deposits: 0,          // wallet সরিয়ে deposit যোগ করা হয়েছে
         winning: 0,          // winning যোগ করা হয়েছে
         matchesPlayed: 0,
         wins: 0,
