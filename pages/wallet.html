@@ -3,27 +3,38 @@
     Wallet
   </div>
 </div><div class="tournament-card">  <div class="tournament-title">
-    Current Balance
-  </div>  <h2 id="walletBalance">
-    Loading...
-  </h2></div><div class="card" style="margin-top:15px;">  <button class="btn btn-primary">
-    Deposit
+    Total Balance
+  </div>  <h2 id="totalBalance">
+    ₹0
+  </h2></div><br><div class="tournament-card">  <p>
+    Deposits:
+    ₹<span id="deposits">0</span>
+  </p>  <p>
+    Winnings:
+    ₹<span id="winnings">0</span>
+  </p></div><br><div class="card"><button
+class="btn btn-primary"
+onclick="alert('Coming Soon')">
+
+Deposit
+
   </button><br><br>
 
-  <button class="btn btn-primary">
-    Withdraw
-  </button></div><div class="card" style="margin-top:15px;">  <div class="card-title">
-    Wallet History
-  </div>  <div>
-    No Transactions Found
-  </div></div><script type="module">
+<button
+class="btn btn-primary"
+onclick="alert('Withdraw From Winnings Only')">
+
+Withdraw
+
+  </button></div><script type="module">
 
 import { auth, db }
-from "./js/firebase.js";
+from "../js/firebase.js";
 
 import {
   doc,
-  getDoc
+  getDoc,
+  setDoc
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
@@ -32,28 +43,82 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-onAuthStateChanged(auth,async(user)=>{
+onAuthStateChanged(
+  auth,
+  async(user)=>{
 
-  if(!user) return;
+    if(!user) return;
 
-  const ref =
-  doc(db,"users",user.uid);
+    const userRef =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
 
-  const snap =
-  await getDoc(ref);
+    const snap =
+    await getDoc(
+      userRef
+    );
 
-  if(snap.exists()){
+    if(!snap.exists()){
 
-    document
-    .getElementById(
-      "walletBalance"
-    )
-    .innerText =
+      await setDoc(
+        userRef,
+        {
+          deposits:0,
+          winnings:0
+        }
+      );
+
+      document.getElementById(
+        "deposits"
+      ).innerText = 0;
+
+      document.getElementById(
+        "winnings"
+      ).innerText = 0;
+
+      document.getElementById(
+        "totalBalance"
+      ).innerText = "₹0";
+
+      return;
+    }
+
+    const data =
+    snap.data();
+
+    const deposits =
+    Number(
+      data.deposits || 0
+    );
+
+    const winnings =
+    Number(
+      data.winnings || 0
+    );
+
+    document.getElementById(
+      "deposits"
+    ).innerText =
+    deposits;
+
+    document.getElementById(
+      "winnings"
+    ).innerText =
+    winnings;
+
+    document.getElementById(
+      "totalBalance"
+    ).innerText =
     "₹" +
-    (snap.data().balance || 0);
+    (
+      deposits +
+      winnings
+    );
 
   }
-
-});
+);
 
   </script>
