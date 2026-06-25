@@ -86,13 +86,15 @@ async function register() {
 
     const user = userCredential.user;
 
+    // এখানেই আপনার পরিবর্তনটি করা হয়েছে
     await setDoc(
       doc(db, "users", user.uid),
       {
         uid: user.uid,
         email: user.email,
         name: "Player",
-        wallet: 0,
+        deposit: 0,          // wallet সরিয়ে deposit যোগ করা হয়েছে
+        winning: 0,          // winning যোগ করা হয়েছে
         matchesPlayed: 0,
         wins: 0,
         referralEarning: 0,
