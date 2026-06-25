@@ -1,0 +1,178 @@
+<style>
+  /* শুধুমাত্র Refer পেজের জন্য ডিজাইন */
+  .refer-header {
+    text-align: center;
+    padding: 10px 0 24px;
+  }
+  
+  .refer-header h1 {
+    font-size: 28px;
+    color: var(--yellow);
+    margin-bottom: 8px;
+  }
+  
+  .refer-header p {
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  
+  .refer-code-box {
+    background: var(--card);
+    border: 1px dashed var(--yellow);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .code-label {
+    font-size: 12px;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  
+  .code-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-top: 12px;
+    border: 1px solid var(--border);
+  }
+  
+  #myReferCode {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 2px;
+  }
+  
+  .btn-copy {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .btn-copy:active {
+    transform: scale(0.95);
+  }
+  
+  .share-btn {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+  }
+
+  .steps-list {
+    list-style: none;
+    margin-top: 16px;
+  }
+  
+  .steps-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    color: var(--text2);
+    font-size: 14px;
+  }
+  
+  .steps-list li span {
+    background: rgba(251, 191, 36, 0.15);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: var(--yellow);
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+</style>
+
+<div class="refer-header">
+  <h1>🎁 Refer & Earn</h1>
+  <p>Invite your friends and earn bonus in your winning wallet when they register!</p>
+</div>
+
+<div class="refer-code-box">
+  <span class="code-label">Your Referral Code</span>
+  <div class="code-display">
+    <span id="myReferCode">------</span>
+    <button class="btn-copy" id="copyBtn">Copy</button>
+  </div>
+</div>
+
+<button class="btn btn-yellow share-btn" id="shareBtn">
+  Share with Friends 🚀
+</button>
+
+<div class="card">
+  <div class="card-title">How it works?</div>
+  <ul class="steps-list">
+    <li><span>1</span> Share your referral code with friends.</li>
+    <li><span>2</span> Your friend signs up using the code.</li>
+    <li><span>3</span> You both get bonus rewards instantly!</li>
+  </ul>
+</div>
+
+<script type="module">
+  import { auth } from "./js/firebase.js";
+  
+  // পেজ লোড হওয়ার পর ইউজারের ইউনিক কোড জেনারেট করা
+  setTimeout(() => {
+    const user = auth.currentUser;
+    const codeElement = document.getElementById("myReferCode");
+    let referCode = "GUEST123";
+
+    if(user) {
+      // ইউজারের ফায়ারবেস UID-এর প্রথম ৬ অক্ষর দিয়ে রেফার কোড বানানো হলো
+      referCode = user.uid.substring(0, 6).toUpperCase();
+      codeElement.innerText = referCode;
+    }
+
+    // Copy বাটনের কাজ
+    document.getElementById("copyBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(referCode);
+      const btn = document.getElementById("copyBtn");
+      
+      btn.innerText = "Copied!";
+      btn.style.background = "var(--success)";
+      
+      setTimeout(() => {
+        btn.innerText = "Copy";
+        btn.style.background = "var(--primary)";
+      }, 2000);
+    });
+
+    // Share বাটনের কাজ (মোবাইলে সরাসরি শেয়ার অপশন খুলবে)
+    document.getElementById("shareBtn").addEventListener("click", () => {
+      const shareData = {
+        title: 'Join FFTW!',
+        text: `Play Free Fire tournaments and win money! Sign up using my referral code: ${referCode}`,
+        url: window.location.origin
+      };
+      
+      if (navigator.share) {
+        navigator.share(shareData).catch(err => console.error("Share cancelled:", err));
+      } else {
+        alert("Your browser does not support the Web Share API. Please copy the code manually!");
+      }
+    });
+  }, 500);
+</script>
