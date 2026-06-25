@@ -1,3 +1,142 @@
+<style>
+    /* Premium Cyber-Tech Glass Match Cards Base (From Old App) */
+    .es-main-section {
+        position: relative;
+        min-height: 92px;
+        height: 92px;
+        border-radius: 18px;
+        overflow: hidden;
+        cursor: pointer;
+        margin-bottom: 16px;
+        background: linear-gradient(145deg, #151f32 0%, #0a0f18 100%);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px; 
+        transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    /* Left Inner Light Indicator Strip */
+    .es-main-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: transparent;
+        transition: background 0.25s ease, box-shadow 0.25s ease;
+        z-index: 4;
+    }
+
+    /* Dynamic Neon Accents */
+    .es-main-section[data-category="soloc"]:hover { border-color: rgba(96, 165, 250, 0.3); }
+    .es-main-section[data-category="soloc"]:hover::before { background: #60a5fa; box-shadow: 2px 0 12px #60a5fa; }
+    
+    .es-main-section[data-category="solocs"]:hover { border-color: rgba(251, 146, 60, 0.3); }
+    .es-main-section[data-category="solocs"]:hover::before { background: #fb923c; box-shadow: 2px 0 12px #fb923c; }
+
+    .es-main-section[data-category="squadc"]:hover { border-color: rgba(250, 204, 21, 0.3); }
+    .es-main-section[data-category="squadc"]:hover::before { background: #facc15; box-shadow: 2px 0 12px #facc15; }
+
+    .es-main-section:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+    }
+
+    .left-controls { display: flex; align-items: center; z-index: 3; flex: 0 0 auto; }
+    .right-controls { display: flex; align-items: center; z-index: 3; flex: 0 0 auto; }
+
+    /* Circular Thumbnail */
+    .card-thumb {
+        position: relative;
+        width: 56px; height: 56px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid rgba(255,255,255,.08);
+        box-shadow: 0 3px 8px rgba(0,0,0,.4);
+        z-index: 2;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+        display: flex; align-items: center; justify-content: center;
+        background: #192231;
+    }
+
+    .card-thumb.swiped { animation: swipeOut 0.5s ease forwards; }
+    @keyframes swipeOut {
+        0% { transform: translateX(0) scale(1); opacity: 1; }
+        100% { transform: translateX(200px) scale(1.1); opacity: 0; }
+    }
+
+    .es-main-section:hover .card-thumb {
+        border-color: rgba(255, 255, 255, 0.18);
+        transform: scale(1.02);
+    }
+
+    .card-thumb img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    /* Card Content */
+    .card-content {
+        position: relative;
+        z-index: 3;
+        padding: 0 16px;
+        height: 100%;
+        display: flex; flex-direction: column; justify-content: center;
+        flex: 1; overflow: hidden;
+    }
+
+    .card-header { display: flex; flex-direction: column; gap: 5px; }
+
+    .card-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        width: max-content; padding: 3px 10px;
+        border-radius: 8px; background: rgba(255,255,255,.03);
+        border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .badge-text {
+        color: #94a3b8; font-size: 11px; font-weight: 600;
+        letter-spacing: .4px; text-transform: uppercase;
+    }
+
+    .card-title {
+        color: #ffffff; font-size: 16px; font-weight: 700;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* Join Button */
+    .join-btn {
+        width: 56px; height: 56px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: linear-gradient(135deg, rgba(96,165,250,0.12), rgba(255,255,255,0.01));
+        color: #60a5fa; font-weight: 700;
+        border: 1px solid rgba(96,165,250,0.22);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+        z-index: 4; cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease;
+        font-size: 13px;
+    }
+
+    .join-btn:hover {
+        background: linear-gradient(135deg, rgba(96,165,250,0.2), rgba(255,255,255,0.04));
+        transform: scale(1.05);
+    }
+
+    /* Animation Clone */
+    .thumb-clone {
+        position: fixed !important; z-index: 9999;
+        pointer-events: none; transform-origin: center center !important;
+        will-change: transform, opacity; background: #151f32;
+    }
+</style>
+
 <div class="promo-banner">
   <h2>Join Tournaments.</h2>
   <p>Win big rewards & prove your skills!</p>
@@ -6,7 +145,7 @@
 
 <div class="tournament-section">
   <div id="tournamentListContainer">
-    <div class="loading-text">Loading Tournaments...</div>
+    <div class="loading-text" style="text-align:center; color:gray; padding:20px;">Loading Premium Matches...</div>
   </div>
 </div>
 
@@ -14,30 +153,34 @@
 import { db, auth } from "./js/firebase.js";
 import { doc, getDoc, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// ফায়ারবেস থেকে ইউজারের deposits + winning যোগ করে হেডারে দেখানোর ফাংশন
 async function loadUserBalance() {
   const user = auth.currentUser;
   if (!user) return;
-
   try {
     const snap = await getDoc(doc(db, "users", user.uid));
     if (snap.exists()) {
       const data = snap.data();
-      const depositsBalance = data.deposits || 0;
-      const winningBalance = data.winning || 0;
-      const totalBalance = depositsBalance + winningBalance;
-
+      const totalBalance = (data.deposits || 0) + (data.winning || 0);
       const walletElem = document.getElementById("totalWalletBalance");
-      if (walletElem) {
-        walletElem.innerText = totalBalance;
-      }
+      if (walletElem) walletElem.innerText = totalBalance;
     }
   } catch (err) {
     console.error("Error loading balance:", err);
   }
 }
 
-// টুর্নামেন্টের লিস্ট লোড করার ফাংশন
+// Map dynamic data to old styling colors & logic
+function getCategoryDesign(mode, type) {
+    const m = (mode || '').toLowerCase();
+    const t = (type || '').toLowerCase();
+    
+    if(m.includes('solo') && t.includes('classic')) return { cat: 'soloc', color: '#60a5fa', icon: '⚔️' };
+    if(m.includes('solo') && t.includes('cs')) return { cat: 'solocs', color: '#fb923c', icon: '🏆' };
+    if(m.includes('squad')) return { cat: 'squadc', color: '#facc15', icon: '🛡️' };
+    // Default fallback
+    return { cat: 'duoc', color: '#38bdf8', icon: '🎯' };
+}
+
 async function loadTournaments() {
   const container = document.getElementById("tournamentListContainer");
   if (!container) return;
@@ -47,7 +190,7 @@ async function loadTournaments() {
     const querySnapshot = await getDocs(q);
     
     if (querySnapshot.empty) {
-      container.innerHTML = `<div class="no-data" style="text-align:center;color:var(--text2);margin-top:20px;">No Tournament Available</div>`;
+      container.innerHTML = `<div style="text-align:center;color:gray;">No Tournament Available</div>`;
       return;
     }
 
@@ -56,24 +199,36 @@ async function loadTournaments() {
     querySnapshot.forEach((docSnap) => {
       const t = docSnap.data();
       const id = docSnap.id;
+      
+      const design = getCategoryDesign(t.mode, t.type);
+      const label = `${t.mode || 'SOLO'}: ${t.type || 'CLASSIC'}`;
+      const title = t.title || 'New Tournament';
+      const img = t.image || 'https://via.placeholder.com/60';
 
       htmlTemplate += `
-        <div class="tournament-card">
-          <div class="t-image">
-            <img src="${t.image || 'https://via.placeholder.com/60'}" alt="game">
-          </div>
-          <div class="t-details">
-            <div class="t-tag-row">
-              <span class="t-tag ${t.type === 'CS' ? 'tag-orange' : 'tag-blue'}">
-                🔵 ${t.mode || 'SOLO'}: ${t.type || 'CLASSIC'}
-              </span>
+        <section class="es-main-section" data-category="${design.cat}" data-id="${id}">
+            <div class="left-controls">
+                <div class="card-thumb">
+                    <img src="${img}" alt="Thumbnail" loading="lazy">
+                </div>
             </div>
-            <h3 class="t-title">⚔️ ${t.title || 'New Tournament'}</h3>
-          </div>
-          <div class="t-action">
-            <button class="btn-join-card" data-id="${id}">Join</button>
-          </div>
-        </div>
+
+            <div class="card-content">
+                <div class="card-header">
+                    <div class="card-badge">
+                        <div class="status-dot" style="background:${design.color}; box-shadow:0 0 10px ${design.color}"></div>
+                        <span class="badge-text">${label}</span>
+                    </div>
+                    <div class="card-title">
+                        <span class="card-icon">${design.icon}</span> ${title}
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-controls">
+                <button class="join-btn" data-id="${id}">Join</button>
+            </div>
+        </section>
       `;
     });
 
@@ -81,11 +236,71 @@ async function loadTournaments() {
 
   } catch (err) {
     console.error("Error loading tournaments:", err);
-    container.innerHTML = `<div class="error-text">Failed to load tournaments.</div>`;
+    container.innerHTML = `<div style="text-align:center;color:red;">Failed to load.</div>`;
   }
 }
 
-// ফায়ারবেস চেক করার জন্য সামান্য ডিলে দিয়ে রান করা
+// Animation Logic Event Delegation (Works for dynamic DOM elements)
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.join-btn');
+    if (!btn) return;
+    
+    const section = btn.closest('.es-main-section');
+    const thumb = section.querySelector('.card-thumb');
+    const matchId = btn.getAttribute('data-id');
+
+    animateThumbToTarget(thumb, btn, function() {
+        localStorage.setItem('matchId', matchId);
+        // Page change logic 
+        if (typeof router !== 'undefined') {
+            router.navigate('match-details');
+        } else {
+            console.log("Navigating to match details for:", matchId);
+        }
+    });
+});
+
+function animateThumbToTarget(thumb, targetEl, cb) {
+    const srcRect = thumb.getBoundingClientRect();
+    const tgtRect = targetEl.getBoundingClientRect();
+
+    const clone = thumb.cloneNode(true);
+    clone.classList.add('thumb-clone');
+    
+    clone.style.width = srcRect.width + 'px';
+    clone.style.height = srcRect.height + 'px';
+    clone.style.left = srcRect.left + 'px';
+    clone.style.top = srcRect.top + 'px';
+    
+    document.body.appendChild(clone);
+
+    const deltaX = (tgtRect.left + tgtRect.width / 2) - (srcRect.left + srcRect.width / 2);
+    const deltaY = (tgtRect.top + tgtRect.height / 2) - (srcRect.top + srcRect.height / 2);
+    const scale = Math.min(tgtRect.width / srcRect.width, tgtRect.height / srcRect.height);
+
+    requestAnimationFrame(() => {
+        clone.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease';
+        clone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scale})`;
+        clone.style.opacity = '0.95';
+    });
+
+    thumb.style.opacity = '0.15';
+
+    clone.addEventListener('transitionend', function handler(e) {
+        if (e.propertyName !== 'transform') return;
+        clone.removeEventListener('transitionend', handler);
+        
+        targetEl.style.transform = 'scale(1.08)';
+        setTimeout(() => targetEl.style.transform = '', 140);
+        if (clone.parentNode) clone.parentNode.removeChild(clone);
+
+        thumb.style.opacity = '';
+        thumb.classList.add('swiped');
+
+        if (typeof cb === 'function') cb();
+    });
+}
+
 setTimeout(() => {
   loadUserBalance();
   loadTournaments();
