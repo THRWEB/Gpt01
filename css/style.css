@@ -51,35 +51,60 @@ body {
 
 /* ---------- Top Header ---------- */
 .dashboard-header {
-  height: 70px;
+  height: 75px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
   position: sticky;
   top: 0;
-  z-index: 100;
-  background: rgba(10, 14, 23, 0.85);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  background: #060913; /* Deep tech dark matching screenshot */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .logo-area {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 900;
-  font-size: 20px;
-  color: var(--yellow);
-  letter-spacing: 1px;
+  gap: 10px;
 }
 
-.logo-icon {
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid var(--success);
-  padding: 4px;
-  border-radius: 8px;
+.logo-icon-box {
+  background: linear-gradient(135deg, #fcd34d, #d97706);
+  color: #000000;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
   font-size: 16px;
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.25);
+}
+
+.logo-main-text {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 18px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.logo-main-text span {
+  color: var(--yellow);
+}
+
+.logo-sub-text {
+  font-size: 8px;
+  font-weight: 700;
+  color: #4b5563;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  display: block;
 }
 
 .header-actions {
@@ -102,18 +127,58 @@ body {
   color: white;
 }
 
+/* Wallet Button Redesign matching screenshot */
 .wallet-status-btn {
-  background: rgba(251, 191, 36, 0.1);
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  border-radius: 20px;
-  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 8px 14px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: var(--yellow);
-  font-weight: 800;
-  font-size: 15px;
+  gap: 8px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.wallet-status-btn:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.wallet-currency-symbol {
+  color: var(--text2);
+  font-size: 13px;
+}
+
+.wallet-add-plus {
+  background: var(--yellow);
+  color: #000000;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 12px;
+  margin-left: 2px;
+}
+
+.notification-btn {
+  position: relative;
+}
+
+.notification-btn .badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  background: var(--danger);
+  border-radius: 50%;
+  display: none;
 }
 
 /* ---------- Page Container ---------- */
@@ -121,27 +186,190 @@ body {
   padding: 16px 16px 110px; /* Space for Bottom Nav & central button */
 }
 
-/* ---------- Promo Banner ---------- */
-.promo-banner {
-  background: linear-gradient(135deg, #4f1593, #7c3aed);
-  border-radius: 24px;
-  padding: 24px 20px;
-  text-align: center;
+/* ---------- Premium Mega Promo Banner ---------- */
+.mega-promo-banner {
+  background: linear-gradient(135deg, rgba(29, 26, 48, 0.6) 0%, rgba(13, 15, 28, 0.9) 100%);
+  border-radius: 28px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   margin-bottom: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
-.promo-banner h2 {
-  font-size: 24px;
+.mega-promo-banner::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(0,0,0,0) 70%);
+  pointer-events: none;
+}
+
+.banner-badge {
+  background: #f59e0b;
+  color: #000000;
+  font-size: 10px;
   font-weight: 800;
-  margin-bottom: 6px;
+  padding: 4px 10px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  margin-bottom: 14px;
 }
 
-.promo-banner p {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
-  margin-bottom: 18px;
+.banner-main-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.banner-main-title span {
+  color: #f59e0b;
+}
+
+.banner-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 16px;
+}
+
+.banner-prize-box p {
+  font-size: 11px;
+  color: var(--text2);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.banner-prize-box h4 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.btn-banner-join {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+  color: #000000;
+  border: none;
+  border-radius: 100px;
+  padding: 12px 24px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+  transition: transform 0.2s;
+}
+
+.btn-banner-join:active { 
+  transform: scale(0.95); 
+}
+
+/* ---------- Horizontal Arena Slider Component ---------- */
+.arena-selection-section {
+  margin-bottom: 28px;
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text2);
+}
+
+.section-subtitle {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #d97706;
+  letter-spacing: 0.5px;
+}
+
+.arena-swiper-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+
+.arena-swiper-track::-webkit-scrollbar {
+  display: none;
+}
+
+.arena-slide-card {
+  flex: 0 0 125px;
+  height: 155px;
+  border-radius: 24px;
+  background: rgba(15, 18, 30, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.arena-slide-card[data-arena="bgmi"] { 
+  border-color: rgba(245, 158, 11, 0.25); 
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.03) 0%, rgba(0,0,0,0) 100%); 
+}
+.arena-slide-card[data-arena="ff"] { border-color: rgba(236, 72, 153, 0.1); }
+.arena-slide-card[data-arena="cod"] { border-color: rgba(56, 189, 248, 0.1); }
+
+.arena-card-icon {
+  font-size: 26px;
+  opacity: 0.8;
+}
+
+.arena-slide-card[data-arena="bgmi"] .arena-card-icon { color: #f59e0b; opacity: 1; }
+
+.arena-card-name {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text2);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0 4px;
+}
+
+.arena-slide-card[data-arena="bgmi"] .arena-card-name { color: #ffffff; }
+
+.arena-active-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #4b5563;
+  text-transform: uppercase;
+}
+
+.arena-slide-card[data-arena="bgmi"] .arena-active-badge {
+  background: #f59e0b;
+  color: #000000;
+  font-weight: 800;
 }
 
 /* ---------- Global Buttons ---------- */
@@ -173,7 +401,7 @@ body {
   bottom: 0;
   height: 75px;
   display: flex;
-  justify-content: space-around;
+  justify-space: space-around;
   align-items: center;
   background: rgba(12, 16, 26, 0.95);
   backdrop-filter: blur(20px);
@@ -211,7 +439,6 @@ body {
   opacity: 1;
 }
 
-/* Center Magic Central Refer Button */
 .refer-btn {
   position: relative;
   bottom: 25px;
@@ -271,7 +498,6 @@ body {
   z-index: 4;
 }
 
-/* Dynamic Hover Neon Accents */
 .es-main-section[data-category="soloc"]:hover { border-color: rgba(96, 165, 250, 0.3); }
 .es-main-section[data-category="soloc"]:hover::before { background: #60a5fa; box-shadow: 2px 0 12px #60a5fa; }
 
@@ -286,7 +512,6 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
 }
 
-/* Controls Alignment */
 .left-controls, 
 .right-controls { 
   display: flex; 
@@ -295,7 +520,6 @@ body {
   flex: 0 0 auto; 
 }
 
-/* Circular Dynamic Thumbnails */
 .card-thumb {
   position: relative;
   width: 56px; 
@@ -324,7 +548,6 @@ body {
   border-radius: 50%; 
 }
 
-/* Card Information & Badges */
 .card-content {
   position: relative;
   z-index: 3;
@@ -378,7 +601,6 @@ body {
   text-overflow: ellipsis; 
 }
 
-/* Circular Sci-Fi Join Button */
 .join-btn {
   width: 56px; 
   height: 56px;
