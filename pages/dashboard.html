@@ -1,117 +1,93 @@
-<div class="wallet-card">
-
-  <div class="wallet-label">
-    Wallet Balance
-  </div>
-
-  <div class="wallet-balance" id="walletBalance">
-    ₹0
-  </div>
-
+<div class="promo-banner">
+  <h2>Join Tournaments.</h2>
+  <p>Win big rewards & prove your skills!</p>
+  <button class="btn btn-yellow" data-page="tournaments">JOIN NOW</button>
 </div>
 
-<div class="card">
-
-  <div class="card-title">
-    Player Statistics
+<div class="tournament-section">
+  <div id="tournamentListContainer">
+    <div class="loading-text">Loading Tournaments...</div>
   </div>
-
-  <div class="stats-grid">
-
-    <div class="stat-box">
-      <div class="stat-value" id="matchesPlayed">
-        0
-      </div>
-
-      <div class="stat-label">
-        Matches
-      </div>
-    </div>
-
-    <div class="stat-box">
-      <div class="stat-value" id="wins">
-        0
-      </div>
-
-      <div class="stat-label">
-        Wins
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<div class="card">
-
-  <div class="card-title">
-    Quick Actions
-  </div>
-
-  <button
-    class="btn btn-primary"
-    data-page="tournaments">
-
-    Browse Tournaments
-
-  </button>
-
-</div>
-
-<div class="card">
-
-  <div class="card-title">
-    Upcoming Tournament
-  </div>
-
-  <div id="upcomingTournament">
-
-    No Tournament Available
-
-  </div>
-
 </div>
 
 <script type="module">
+import { db, auth } from "./js/firebase.js";
+import { doc, getDoc, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-import { db, auth }
-from "./js/firebase.js";
+// ফায়ারবেস থেকে ইউজারের deposits + winning যোগ করে হেডারে দেখানোর ফাংশন
+async function loadUserBalance() {
+  const user = auth.currentUser;
+  if (!user) return;
 
-import {
-  doc,
-  getDoc
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists()) {
+      const data = snap.data();
+      const depositsBalance = data.deposits || 0;
+      const winningBalance = data.winning || 0;
+      const totalBalance = depositsBalance + winningBalance;
 
-const user = auth.currentUser;
-
-if(user){
-
-  const snap = await getDoc(
-    doc(db,"users",user.uid)
-  );
-
-  if(snap.exists()){
-
-    const data = snap.data();
-
-    document.getElementById(
-      "walletBalance"
-    ).innerText =
-      "₹" + (data.wallet || 0);
-
-    document.getElementById(
-      "matchesPlayed"
-    ).innerText =
-      data.matchesPlayed || 0;
-
-    document.getElementById(
-      "wins"
-    ).innerText =
-      data.wins || 0;
-
+      const walletElem = document.getElementById("totalWalletBalance");
+      if (walletElem) {
+        walletElem.innerText = totalBalance;
+      }
+    }
+  } catch (err) {
+    console.error("Error loading balance:", err);
   }
-
 }
 
+// টুর্নামেন্টের লিস্ট লোড করার ফাংশন
+async function loadTournaments() {
+  const container = document.getElementById("tournamentListContainer");
+  if (!container) return;
+
+  try {
+    const q = query(collection(db, "tournaments")); 
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.empty) {
+      container.innerHTML = `<div class="no-data" style="text-align:center;color:var(--text2);margin-top:20px;">No Tournament Available</div>`;
+      return;
+    }
+
+    let htmlTemplate = "";
+
+    querySnapshot.forEach((docSnap) => {
+      const t = docSnap.data();
+      const id = docSnap.id;
+
+      htmlTemplate += `
+        <div class="tournament-card">
+          <div class="t-image">
+            <img src="${t.image || 'https://via.placeholder.com/60'}" alt="game">
+          </div>
+          <div class="t-details">
+            <div class="t-tag-row">
+              <span class="t-tag ${t.type === 'CS' ? 'tag-orange' : 'tag-blue'}">
+                🔵 ${t.mode || 'SOLO'}: ${t.type || 'CLASSIC'}
+              </span>
+            </div>
+            <h3 class="t-title">⚔️ ${t.title || 'New Tournament'}</h3>
+          </div>
+          <div class="t-action">
+            <button class="btn-join-card" data-id="${id}">Join</button>
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = htmlTemplate;
+
+  } catch (err) {
+    console.error("Error loading tournaments:", err);
+    container.innerHTML = `<div class="error-text">Failed to load tournaments.</div>`;
+  }
+}
+
+// ফায়ারবেস চেক করার জন্য সামান্য ডিলে দিয়ে রান করা
+setTimeout(() => {
+  loadUserBalance();
+  loadTournaments();
+}, 600);
 </script>
