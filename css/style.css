@@ -1,374 +1,300 @@
-:root{
-  --bg:#0b1020;
-  --card:rgba(255,255,255,0.08);
-  --border:rgba(255,255,255,0.12);
+:root {
+  --bg: #0b1020;
+  --card: rgba(25, 30, 45, 0.6);
+  --border: rgba(255, 255, 255, 0.08);
 
-  --primary:#7C3AED;
-  --primary2:#9333EA;
+  --primary: #7C3AED;
+  --primary2: #9333EA;
+  
+  --yellow: #FBBF24;
+  --yellow-glow: rgba(251, 191, 36, 0.3);
 
-  --cyan:#06B6D4;
+  --cyan: #06B6D4;
 
-  --text:#FFFFFF;
-  --text2:#B8C1D9;
+  --text: #FFFFFF;
+  --text2: #8b95a5;
 
-  --success:#22C55E;
-  --danger:#EF4444;
+  --success: #22C55E;
+  --danger: #EF4444;
 
-  --radius:20px;
+  --radius: 20px;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:
-  Inter,
-  system-ui,
-  sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
 }
 
-body{
-  background:
-  linear-gradient(
-  180deg,
-  #090D1A 0%,
-  #111827 100%
-  );
-
-  color:var(--text);
-
-  min-height:100vh;
+body {
+  background: linear-gradient(180deg, #090d16 0%, #0c121e 100%);
+  color: var(--text);
+  min-height: 100vh;
 }
 
 /* ---------- Scroll ---------- */
-
-::-webkit-scrollbar{
-  width:6px;
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 50px;
 }
 
-::-webkit-scrollbar-thumb{
-  background:var(--primary);
-  border-radius:50px;
+/* ---------- Top Header (New Design) ---------- */
+.dashboard-header {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 14, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
 }
 
-/* ---------- Top Bar ---------- */
-
-.topbar{
-  height:65px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  position:sticky;
-  top:0;
-  z-index:100;
-
-  backdrop-filter:blur(16px);
-
-  background:
-  rgba(10,10,20,.55);
-
-  border-bottom:
-  1px solid var(--border);
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--yellow);
+  letter-spacing: 1px;
 }
 
-.topbar h3{
-  font-size:20px;
-  font-weight:700;
+.logo-icon {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid var(--success);
+  padding: 4px;
+  border-radius: 8px;
+  font-size: 16px;
 }
 
-/* ---------- Page ---------- */
-
-#pageContainer{
-  padding:
-  16px
-  16px
-  90px;
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
-/* ---------- Glass Card ---------- */
-
-.card{
-
-  background:
-  var(--card);
-
-  border:
-  1px solid var(--border);
-
-  border-radius:
-  var(--radius);
-
-  backdrop-filter:
-  blur(18px);
-
-  padding:16px;
-
-  margin-bottom:16px;
+.icon-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
 }
 
-.card-title{
-  font-size:18px;
-  font-weight:700;
-  margin-bottom:12px;
+.wallet-status-btn {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 20px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--yellow);
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
 }
 
-/* ---------- Wallet Card ---------- */
-
-.wallet-card{
-
-  background:
-  linear-gradient(
-  135deg,
-  rgba(124,58,237,.45),
-  rgba(147,51,234,.25)
-  );
-
-  border:
-  1px solid
-  rgba(255,255,255,.15);
-
-  border-radius:24px;
-
-  padding:20px;
+/* ---------- Page Container ---------- */
+#pageContainer {
+  padding: 16px 16px 110px; /* Bottom padding increased for the large refer button */
 }
 
-.wallet-label{
-  color:var(--text2);
-  font-size:14px;
+/* ---------- Promo Banner (Join Now) ---------- */
+.promo-banner {
+  background: linear-gradient(135deg, #4f1593, #7c3aed);
+  border-radius: 24px;
+  padding: 24px 20px;
+  text-align: center;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
 }
 
-.wallet-balance{
-  font-size:32px;
-  font-weight:800;
-  margin-top:8px;
+.promo-banner h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.promo-banner p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 18px;
 }
 
 /* ---------- Buttons ---------- */
-
-.btn{
-
-  width:100%;
-
-  border:none;
-
-  cursor:pointer;
-
-  padding:14px;
-
-  border-radius:16px;
-
-  font-weight:700;
-
-  transition:.25s;
+.btn {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  transition: 0.25s;
 }
 
-.btn-primary{
-
-  color:white;
-
-  background:
-  linear-gradient(
-  135deg,
-  var(--primary),
-  var(--primary2)
-  );
+.btn-yellow {
+  background: var(--yellow);
+  color: #000;
+  box-shadow: 0 4px 15px var(--yellow-glow);
 }
 
-.btn-primary:active{
-  transform:scale(.98);
+.btn-yellow:active {
+  transform: scale(0.96);
 }
 
-.btn-outline{
-
-  background:transparent;
-
-  border:
-  1px solid var(--border);
-
-  color:white;
+/* ---------- Tournament Cards ---------- */
+.tournament-card {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  margin-bottom: 14px;
+  gap: 14px;
+  transition: 0.3s;
 }
 
-/* ---------- Inputs ---------- */
-
-.input{
-
-  width:100%;
-
-  padding:14px;
-
-  margin-bottom:12px;
-
-  border-radius:16px;
-
-  border:
-  1px solid var(--border);
-
-  background:
-  rgba(255,255,255,.05);
-
-  color:white;
+.t-image img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.input:focus{
-  outline:none;
-
-  border-color:
-  var(--primary);
+.t-details {
+  flex: 1;
 }
 
-/* ---------- Dashboard Stats ---------- */
-
-.stats-grid{
-
-  display:grid;
-
-  grid-template-columns:
-  1fr 1fr;
-
-  gap:12px;
+.t-tag-row {
+  margin-bottom: 4px;
 }
 
-.stat-box{
-
-  padding:16px;
-
-  border-radius:18px;
-
-  background:
-  rgba(255,255,255,.05);
-
-  border:
-  1px solid var(--border);
+.t-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text2);
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
-.stat-value{
+.tag-orange { color: #F97316; border-color: rgba(249, 115, 22, 0.3); }
+.tag-blue { color: #38BDF8; border-color: rgba(56, 189, 248, 0.3); }
 
-  font-size:24px;
-  font-weight:800;
+.t-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  margin-top: 4px;
 }
 
-.stat-label{
-
-  margin-top:6px;
-
-  color:var(--text2);
-
-  font-size:13px;
+.btn-join-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 30px;
+  padding: 8px 18px;
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-/* ---------- Tournament Card ---------- */
-
-.tournament-card{
-
-  background:
-  rgba(255,255,255,.06);
-
-  border:
-  1px solid var(--border);
-
-  border-radius:20px;
-
-  padding:16px;
-
-  margin-bottom:14px;
+.btn-join-card:active {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(0.95);
 }
 
-.tournament-title{
-
-  font-size:18px;
-  font-weight:700;
+/* ---------- Bottom Nav (New Design with Center Button) ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 75px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(12, 16, 26, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-.tournament-meta{
-
-  margin-top:10px;
-
-  display:flex;
-  justify-content:space-between;
-
-  color:var(--text2);
-
-  font-size:13px;
+.nav-item {
+  background: none;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 60px;
 }
 
-/* ---------- Bottom Nav ---------- */
-
-.bottom-nav{
-
-  position:fixed;
-
-  left:0;
-  right:0;
-  bottom:0;
-
-  height:72px;
-
-  display:flex;
-
-  justify-content:space-around;
-
-  align-items:center;
-
-  backdrop-filter:blur(18px);
-
-  background:
-  rgba(10,10,20,.85);
-
-  border-top:
-  1px solid var(--border);
+.nav-icon {
+  font-size: 22px;
+  filter: grayscale(1);
+  opacity: 0.7;
+  transition: 0.3s;
 }
 
-.bottom-nav button{
-
-  background:none;
-
-  border:none;
-
-  color:white;
-
-  cursor:pointer;
-
-  font-size:24px;
+.nav-text {
+  font-size: 11px;
+  font-weight: 600;
 }
 
-/* ---------- Loader ---------- */
-
-.loader{
-
-  width:45px;
-  height:45px;
-
-  border-radius:50%;
-
-  border:
-  4px solid
-  rgba(255,255,255,.15);
-
-  border-top:
-  4px solid
-  var(--primary);
-
-  animation:
-  spin 1s linear infinite;
+/* Active state for normal nav items */
+.nav-item:active .nav-icon {
+  filter: grayscale(0);
+  opacity: 1;
 }
 
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
-  }
+/* The Magic Central 'Refer' Button */
+.refer-btn {
+  position: relative;
+  bottom: 25px; /* Pushes it upwards out of the bar */
+  background: var(--yellow);
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  justify-content: center;
+  box-shadow: 0 0 25px var(--yellow-glow);
+  border: 5px solid #0c121e; /* Matches body background */
+  color: #000;
 }
 
-/* ---------- Mobile ---------- */
+.refer-btn .nav-icon {
+  font-size: 26px;
+  filter: none;
+  opacity: 1;
+}
 
-@media(max-width:480px){
-
-  .wallet-balance{
-    font-size:28px;
-  }
-
-  .card-title{
-    font-size:16px;
-  }
+.refer-btn .nav-text {
+  font-size: 11px;
+  font-weight: 800;
+  color: #000;
+  margin-top: -2px;
 }
