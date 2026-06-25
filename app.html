@@ -1,47 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>FF Arena Pro</title>
+  <title>FFTW</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<header class="topbar">
-  <h3>FF Arena Pro</h3>
+<!-- নতুন টপ হেডার (app.html এর ভেতরেই ফিক্সড থাকবে) -->
+<header class="dashboard-header">
+  <div class="logo-area">
+    <span class="logo-icon">🎮</span>
+    <span class="logo-text">FFTW</span>
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn notification-btn">
+      🔔<span class="badge"></span>
+    </button>
+    <!-- গ্লোবাল ওয়ালেট ব্যালেন্স যা ডেটাবেস থেকে লোড হবে -->
+    <button class="wallet-status-btn" data-page="wallet">
+      💼 <span id="totalWalletBalance">0</span>
+    </button>
+  </div>
 </header>
 
+<!-- ডাইনামিক পেজগুলো (যেমন: dashboard, tournaments) এখানে লোড হবে -->
 <div id="pageContainer">
 </div>
 
+<!-- নতুন ডিজাইনের বটম নেভিগেশন বার -->
 <nav class="bottom-nav">
-
-<button data-page="dashboard">
-🏠
-</button>
-
-<button data-page="tournaments">
-🎮
-</button>
-
-<button data-page="wallet">
-💰
-</button>
-
-<button data-page="profile">
-👤
-</button>
   
-<button data-page="my-matches">
-📋
-</button>
-  <button data-page="admin" style="display:none;">
-⚙️
+  <button class="nav-item" data-page="dashboard">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-text">Home</span>
+  </button>
+
+  <button class="nav-item" data-page="tournaments">
+    <span class="nav-icon">🎮</span>
+    <span class="nav-text">Matches</span>
+  </button>
+
+  <!-- স্পেশাল 'Refer' বাটন (এটি ছবির মতো মাঝখানে বড় করে দেখানোর জন্য আলাদা ক্লাস দেওয়া হলো) -->
+  <button class="nav-item refer-btn" data-page="refer">
+    <span class="nav-icon">🫂</span>
+    <span class="nav-text">Refer</span>
+  </button>
+
+  <button class="nav-item" data-page="profile">
+    <span class="nav-icon">👤</span>
+    <span class="nav-text">Profile</span>
+  </button>
+
+  <button class="nav-item" data-page="wallet">
+    <span class="nav-icon">💰</span>
+    <span class="nav-text">Wallet</span>
+  </button>
+  
+  <!-- অ্যাডমিন বাটন -->
+  <button class="nav-item" data-page="admin" style="display:none;">
+    <span class="nav-icon">⚙️</span>
+    <span class="nav-text">Admin</span>
   </button>
 
 </nav>
 
+<!-- গ্লোবাল স্ক্রিপ্ট -->
 <script type="module" src="js/app-ui.js"></script>
 
 </body>
